@@ -7,6 +7,7 @@ import { Truck, Wrench, Package } from 'lucide-react';
 export default function Home() {
   const [selectedOption, setSelectedOption] = useState("pickup");
 
+<<<<<<< Updated upstream
   const services = [
     { title: "Pengiriman Kendaraan", image: "/Kendaraan.jpg" },
     { title: "Pengiriman Alat Berat", image: "/Alat_Berat.jpg" },
@@ -17,6 +18,67 @@ export default function Home() {
     { title: "Pengiriman Via Kontainer", image: "/kontainer.jpg" },
     { title: "Pengiriman Via Kapal Kargo", image: "/Kapal_Kargo.jpg" },
   ];
+=======
+  const [services, setServices] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/services')
+      .then((res) => res.json())
+      .then((data) => {
+        const mapped = data.map((item) => ({
+          title: item.title,
+          image: `http://localhost:8000/storage/${item.image}`,
+        }));
+        setServices(mapped);
+      })
+      .catch((err) => console.error('Error fetching services:', err));
+  }, []);
+
+    const images = [
+      "/kapal.jpg",
+      "/Kendaraan.jpg",
+      "/kontainer.jpg",
+      "/Kapal_Kargo.jpg",
+    ];
+    const containerRef = useRef(null);
+    const [width, setWidth] = useState(0);
+  
+    // Hitung total lebar konten saat komponen dimuat
+    useEffect(() => {
+      if (containerRef.current) {
+        setWidth(containerRef.current.scrollWidth - containerRef.current.offsetWidth);
+      }
+    }, []);
+
+    
+  const [testimonials, setTestimonials] = useState([]);
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await fetch("http://localhost:8000/api/testimonials"); // ganti sesuai URL API kamu
+        const data = await res.json();
+
+        // Sesuaikan field API ke frontend
+        const mapped = data.map((item) => ({
+          name: item.nama,
+          location: item.asal,
+          rating: item.rating,
+          review: item.testimoni,
+          image: "/ronaldo.jpg", // default atau dari backend jika ada
+        }));
+
+        setTestimonials(mapped);
+      } catch (error) {
+        console.error("Error fetching testimonials:", error);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+    
+  
+>>>>>>> Stashed changes
 
   return (
     <><div className="bg-white text-gray-900 min-h-screen flex flex-col">
